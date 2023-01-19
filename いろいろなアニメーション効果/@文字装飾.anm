@@ -1,0 +1,19 @@
+@図形装飾
+--track0:透明度,0,100,0,0.1
+--track1:サイズ,0,100,0,0.1
+--dialog:装飾図形/fig,fig="四角形";1文字毎の装飾個数,count=1;カラー/col,color=0x000000;データ,pos={};
+obj.draw()
+obj.load("figure",fig,color)
+--obj.effect("透明度","透明度",obj.track0)
+obj.setanchor("pos",count,"line")
+for i=0,#pos/2 do
+    obj.ox = pos[i*2+1]
+    obj.oy = pos[i*2+2]
+    obj.draw(0,0,0,obj.track1,obj.track0/100)
+end
+
+@ランダム方向登場
+--track0:速度,0,999,0,0.1
+--track1:バラバラ度,0,100,0,0.1
+if (obj.frame > obj.track0 * obj.index) then
+end

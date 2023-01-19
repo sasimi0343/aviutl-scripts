@@ -1,0 +1,8 @@
+@基本グリッチ
+--track0:速さ倍率,0,999,120,0.1
+--track1:Y座標最高,-9999,9999,340,0.1
+--track2:Y座標最低,-9999,9999,380,0.1
+--track3:Yサイズ最低,-9999,9999,10,0.1
+obj.load("framebuffer")
+obj.effect("グリッピング","上",obj.track1+obj.rand(0,obj.track3/2),"下",obj.track1-obj.track2-obj.rand(0,obj.track3/2))
+obj.draw()

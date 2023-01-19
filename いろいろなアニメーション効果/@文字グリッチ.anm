@@ -1,0 +1,20 @@
+@文字グリッチ
+--track0:X軸変換量,0,20,20,0.1
+--track1:Y軸変換量,0,10,0.5,0.1
+--track2:ランダム種,0,99,1,1
+--obj.load("framebuffer")
+obj.effect("クリッピング","上",obj.rand(10,50,obj.track2,1)*obj.track1)
+if (obj.num > 1) then
+    obj.ox = -obj.ox
+end
+obj.draw()
+if (obj.num > 1) then
+    obj.ox = -obj.ox
+end
+obj.effect("反転","左右反転",1,"上下反転",1)
+obj.effect("クリッピング","上",-obj.rand(10,obj.h,obj.track2,1)*obj.track1,"下",obj.rand(10,obj.h,obj.track2,1)*obj.track1,"右",obj.track0)
+obj.draw(0,-obj.rand(10,obj.h,obj.track2,1)*obj.track1)
+obj.effect("反転","左右反転",-1,"上下反転",0)
+obj.effect("クリッピング","上",20,"下",-obj.rand(10,obj.h,obj.track2,1)*obj.track1,"右",-obj.track0,"左",obj.track0)
+obj.draw()
+obj.alpha = 0

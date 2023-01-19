@@ -1,0 +1,8 @@
+@nピクセル移動
+--track0:移動量,0,99.9,0,0.1
+--dialog:表示数,count=2;データ,pos={}
+obj.setanchor("pos",tonumber(count),"line")
+--obj.track0%(obj.track0/count)*count/100
+--pos[math.floor(obj.track0/(100/count))*2+1]+(pos[math.floor(obj.track0/(100/count))*2+3] - pos[math.floor(obj.track0/(100/count))*2+1])*(obj.track0%(obj.track0/count)*count/100)
+obj.ox = pos[math.floor(obj.track0/(100/count))*2+1]+(pos[math.floor(obj.track0/(100/count))*2+3] - pos[math.floor(obj.track0/(100/count))*2+1])*(obj.track0%(obj.track0/count)*count/100)
+obj.oy = pos[math.floor(obj.track0/(100/count))*2+2]+(pos[math.floor(obj.track0/(100/count))*2+4] - pos[math.floor(obj.track0/(100/count))*2+2])*(obj.track0%(obj.track0/count)*count/100)

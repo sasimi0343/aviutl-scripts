@@ -1,0 +1,31 @@
+--dialog:表示文字,char=1;デバッグ表示/chk,showdebug=1;pos,pos={};
+obj.cx = 0
+obj.cy = 0
+
+obj.setanchor("pos", obj.num)
+
+--pos [1] 角度
+obj.rz = pos[obj.index * 2+1]
+
+if (obj.index == 0) then
+	if (cp == nil) then
+		cp = {}
+	end
+end
+
+cp[obj.index+1] = obj.ox
+
+obj.draw()
+
+if (showdebug == 1 and obj.index == obj.num-1) then
+
+	
+	obj.setfont("MS UI Gothic", 50, 3, 0xffff55)
+	obj.load("text", pos[char * 2+1] .. "°")
+	obj.ox = cp[char] + 100
+	obj.aspect = 0
+	obj.alpha = 1
+	
+	obj.draw()
+	
+end

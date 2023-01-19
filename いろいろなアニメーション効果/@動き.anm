@@ -1,0 +1,10 @@
+@ˆê’èŠÔ‚²‚Æ‚É‚Â‚Â‚­“®‚«
+--track0:BPM,0,999,120,0.1
+--track1:”{—¦,0,16,1,0.1
+--track2:YÀ•W,-9999,9999,50,0.1
+--dialog:Œ¸‘¬ƒ‚[ƒh/chk,decmode = 1;Œ¸‘¬‚É‚©‚©‚éŠÔ,dectime = 0.1;
+if (obj.time*100%(((60/obj.track0)*obj.track1)*100) == 0) then
+    obj.oy = 200
+else
+    obj.oy = 0
+end

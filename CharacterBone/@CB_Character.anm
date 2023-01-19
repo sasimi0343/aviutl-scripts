@@ -1,0 +1,244 @@
+
+@CharacterBase
+--track0:再読み込み,0,1,0,1
+--file:
+
+--debug_print(tostring(cb))
+
+if (cb == nil) then
+	cb = {}
+end
+
+if (bones == nil) then
+	bones = {}
+end
+
+if (filpath == nil) then
+	filpath = ""
+end
+
+local cbformat = require("cb_format")
+--debug_print(file)
+--debug_print(filpath)
+
+if (not( filpath == file) or obj.track0 == 1) then
+	filpath = file
+	cb = cbformat.Perse(filpath)
+	
+	--debug_print("Table:")
+	--for k,v in pairs(cb) do
+		--debug_print("> " .. k .. ": " .. tostring(v) .. " (" .. type(v) .. ")")
+		--if (type(v) == "table") then
+			--debug_print("> > Table:")
+			--for k2,v2 in pairs(v) do
+				--debug_print("> > " .. k2 .. ": " .. tostring(v2))
+				--if (type(v2) == "table") then
+					--debug_print("> > > Table:")
+					--for k3,v3 in pairs(v2) do
+						--debug_print("> > > " .. k3 .. ": " .. tostring(v3))
+					--end
+				--end
+			--end
+		--end
+	--end
+	
+	for k,v in pairs(cb.bones) do
+		bones[v.id] = v
+		bones[v.id].isdraw = false
+		bones[v.id].rz = 0
+		bones[v.id].disp = nil
+		bones[v.id].sfile = nil
+		bones[v.id].debugsuru = false
+		
+		if (v.blend == nil) then
+			v.blend = 0
+		end
+		if (v.alpha == nil) then
+			v.alpha = 1.0
+		end
+	end
+end
+
+@CharacterSettings
+--track0:時間ずれ,0,999,0,1
+--dialog:Base,abase=0;口,mouth=-1;目,eye=-1;バッファ幅,bufw=0;バッファ高さ,bufh=0;エフェクト間引き/chk,diseff=0;まばたき無し/chk,blinkkk=0;
+bw = bufw
+bh = bufh
+timoff = obj.track0
+local cbase = abase
+
+if (bw == 0) then
+	bw = cb.w
+end
+
+if (bh == 0) then
+	bh = cb.h
+end
+
+if (timoff == nil) then
+	timoff = 0
+end
+
+if (cbase == 0 or cbase == nil or cbase == "") then
+	cbase = cb.defbase
+end
+
+--debug_print("cbase: " .. cbase)
+
+obj.load("image", cbase)
+--obj.draw()
+
+for k,v in pairs(bones) do
+	v.isdraw = false
+	v.disp = nil
+	v.rz = 0
+	v.sfile = nil
+	v.debugsuru = false
+	v.alt = false
+end
+
+if  (not (mouth == -1)) then
+	local bone = bones["mouth"]
+	bone.sfile = bone.filprefix .. tostring(mouth) .. bone.filsuffix
+end
+
+if  (not (eye == -1)) then
+	local bone = bones["eye"]
+	bone.sfile = bone.filprefix .. tostring(eye) .. bone.filsuffix
+end
+
+@Bone
+--track0:Z回転,-720,720,0,0.1
+--dialog:id,id="<NIL>";代理ファイル,afil=0;Alt/chk,altimg=0;debug/chk,debugsuru=0;debugpos,pos={};
+
+local cfil = afil
+
+local bone = bones[id]
+
+if (cfil == 0 or cfil == nil or cfil == "") then
+	cfil = bone.deffile
+end
+
+--debug_print("cfil: " .. cfil)
+--obj.draw()
+--obj.load("image", cfil)
+--obj.rz = obj.track0
+
+bone.isdraw = true
+bone.rz = obj.track0
+bone.sfile = cfil
+bone.debugsuru = (debugsuru == 1)
+bone.alt = (altimg == 1)
+
+if (debugsuru == 1) then
+
+obj.setanchor("pos", 1, "star")
+bone.pos = pos
+
+end
+
+@Draw
+
+local tim = obj.frame + timoff
+
+obj.setoption("drawtarget","tempbuffer", bw, bh)
+
+if (diseff == 1 and obj.getinfo("saving") == false) then
+obj.draw()
+end
+
+for k,v in pairs(cb.bones) do
+	local x = 0
+	local y = 0
+	local r = 0
+	
+	obj.setoption("drawtarget","tempbuffer")
+	obj.setoption("blend", v.blend)
+	
+	if ((not bones[v.id].isdraw) and diseff == 1 and obj.getinfo("saving") == false) then
+	
+	else --kokokara
+	
+	if (not (bones[v.id].sfile == nil)) then
+		obj.load("image", bones[v.id].sfile)
+	else
+		if (not (v.altfile == nil)) and (bones[v.id].alt) then
+			obj.load("image", v.altfile)
+		else
+			obj.load("image", v.deffile)
+		end
+	end
+	
+	
+	
+	if ((not (v.blindfile == nil)) and (not (blinkkk == 1))) then
+		if ((tim%(obj.framerate*1.5) > (obj.framerate*1.5)-5) and (rand(0, 3, k, tim))) then obj.load("image", v.blindfile) end
+	end
+	
+	r = bones[v.id].rz
+	
+	if (not (bones[v.id].disp == nil)) then
+		local disp = bones[v.id].disp
+		obj.effect("ディスプレイスメントマップ", "param0", disp.param0, "param1", disp.param1, "X", disp.x, "Y", disp.y, "サイズ", disp.size, "ぼかし", disp.bokasi, "calc", disp.mode)
+	end
+	
+	if ((diseff == 0 or obj.getinfo("saving") == true) and (v.shake == 1)) then
+		local ti = math.sin(((obj.time + (timoff / obj.framerate)) * 2) + rand(0, 30, -tonumber(k), 1))
+		x = ti * 0.5
+		obj.effect("ディスプレイスメントマップ", "param0", ti * 14, "X", 0, "Y", v.shake_y, "サイズ", 150, "ぼかし", 150)
+		--debug_print("Drawing " .. v.shake_y)
+	end
+	
+	obj.draw(v.ox + x, v.oy + y, 0, 1.0, v.alpha, 0, 0, r)
+	
+	if (not (bones[v.id].disp == nil)) then
+		local disp = bones[v.id].disp
+		if (disp.debug) then
+			obj.load("figure", "四角形", 0xffffff, 1)
+			local s = disp.size / 2
+			local x = disp.x - s
+			local y = disp.y - s
+			obj.drawpoly(x,y,0, x+(s*2),y,0, x+(s*2),y+(s*2),0, x,y+(s*2),0)
+		end
+	end
+	
+	if (bones[v.id].debugsuru) then
+
+		local bone = bones[v.id]
+
+		obj.load("figure", "四角形", 0xffffff, 1)
+		local s = 1280 / 2
+		local sy = 50
+		local x = 0 - s
+		local y = -640 - sy
+		obj.drawpoly(x,y,0, x+(s*2),y,0, x+(s*2),y+(sy*2),0, x,y+(sy*2),0)
+
+		obj.load("figure", "三角形", 0xffffff, 50)
+		obj.draw(bone.pos[1], -640)
+
+	end
+	
+	end --kokomade
+	
+
+end
+
+obj.setoption("drawtarget","framebuffer")
+obj.load("tempbuffer")
+
+@EFディスプレイスメントマップ
+--track0:Param0,-999,999,0,0.1
+--track1:Param1,-999,999,0,0.1
+--dialog:id,id="<NIL>";図形/fig,figure="円";X,ex=0;Y,ey=0;サイズ,size=150;ぼかし,bokasi=150;変形モード,mode=0;debug/chk,debug=0;
+
+local bone = bones[id]
+bone.disp = {}
+bone.disp.param0 = obj.track0
+bone.disp.param1 = obj.track1
+bone.disp.figure = figure
+bone.disp.x = ex
+bone.disp.y = ey
+bone.disp.size = size
+bone.disp.mode = mode
+bone.disp.bokasi = bokasi
+bone.disp.debug = (debug == 1)

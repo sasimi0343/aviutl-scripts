@@ -1,0 +1,248 @@
+@すべあなのモールス
+--track0:フレーム,0,3,0,1
+--color:0xffffff
+if (obj.track0 >= 0 and obj.track0 < 1) then
+obj.load("figure", "四角形",color,360)
+obj.aspect = 0.9
+obj.draw()
+end
+if(obj.track0 >= 1 and obj.track0 < 2) then
+obj.load("figure", "四角形",color,180)
+obj.aspect = 0.8
+obj.oy = 160
+obj.draw()
+obj.oy = -160
+obj.draw()
+end
+if(obj.track0 >= 2 and obj.track0 < 3) then
+obj.load("figure", "四角形",color,60)
+obj.aspect = 0.6
+obj.oy = 260
+obj.draw()
+obj.oy = -260
+obj.draw()
+end
+if(obj.track0 >= 3 and obj.track0 < 4) then
+obj.load("figure", "四角形",color,40)
+obj.aspect = 0.4
+obj.oy = 300
+obj.draw()
+obj.oy = -300
+obj.draw()
+end
+
+@すべあなのモールス上位互換
+--track0:BPM,1,999,120,0.1
+--dialog:morse,morse="";col/col,color=0xffffff;
+local beat = (60 / obj.track0) / 4
+local curbeat = math.floor(obj.time / beat)
+--obj.load("text", curbeat, color, 40)
+--obj.draw()
+
+local strbeat = -1
+local ind = 0
+for i=1,#morse do
+	if (strbeat >= curbeat) then
+		ind = i-1
+		break
+	else
+		if (string.sub(morse, i, i) == ".") then
+			strbeat = strbeat + 1
+		elseif (string.sub(morse, i, i) == "-") then
+			strbeat = strbeat + 2
+		elseif (string.sub(morse, i, i) == " ") then
+			strbeat = strbeat + 1
+		end
+	end
+end
+
+if (curbeat == strbeat) then
+	--obj.load("text", strbeat, 0xff0000, 40)
+	--obj.draw(-100)
+else
+	--obj.load("text", strbeat, color, 40)
+	--obj.draw(0,-50)
+end
+
+local tim = (strbeat) * beat * obj.framerate
+if (string.sub(morse, ind, ind) == "-") then
+	tim = (strbeat-1) * beat * obj.framerate
+end
+local stime = math.floor(obj.frame - tim)
+debug_print(obj.frame .. " - " .. tim .. " = " .. stime)
+--if (stime > 0) then
+	--obj.load("text", string.sub(morse, 0, ind))
+	--obj.draw(100,200)
+--end
+	--obj.load("text", strbeat .. " > " .. curbeat)
+	--obj.draw(100,0)
+
+--frame / fps = time
+-- tim = strbeat * 1/16 beat (seconds)
+-- time (frames) = strbeat * (beat * fps)
+--stime = obj.frame - time (frames)
+
+if (stime >= 0 and stime < 4 and string.sub(morse, ind, ind) ~= " ") then
+	if (stime == 0) then
+		obj.load("figure", "四角形",color,360)
+		obj.aspect = 0.9
+		obj.draw()
+	elseif (stime == 1) then
+		obj.load("figure", "四角形",color,180)
+		obj.aspect = 0.8
+		obj.oy = 160
+		obj.draw()
+		obj.oy = -160
+		obj.draw()
+	elseif (stime == 2) then
+		obj.load("figure", "四角形",color,60)
+		obj.aspect = 0.6
+		obj.oy = 260
+		obj.draw()
+		obj.oy = -260
+		obj.draw()
+	elseif (stime == 3) then
+		obj.load("figure", "四角形",color,40)
+		obj.aspect = 0.4
+		obj.oy = 300
+		obj.draw()
+		obj.oy = -300
+		obj.draw()
+	end
+end
+
+--debug_print(strbeat .. ", " .. curbeat)
+
+
+@下の白いやつ
+--track0:上,-9999,9999,8,0.1
+--track1:下,-9999,9999,8,0.1
+--track2:左,-9999,9999,100,0.1
+--track3:右,-9999,9999,100,0.1
+for i=0,30 do
+
+obj.load("figure","四角形",0xffffff, 225)
+obj.effect("クリッピング","上",obj.rand(220,230, i*6),"左",obj.rand(0,obj.track2, i*6+2),"右",obj.rand(0,obj.track3), i*6+3)
+obj.draw(obj.rand(-obj.screen_w/2,obj.screen_w/2, i*6+4), obj.rand(500,obj.screen_h/2-200, i*6+5))
+
+end
+
+@十字
+--track0:サイズ,0,9999,100,1
+--track1:縦横比,0,100,75,0.1
+--dialog:色1/col,color1=0xffffff;色2/col,color2=0xffffff;異なる色/chk,diffcolor=0;モード,mode=0;
+
+obj.setoption("drawtarget","tempbuffer", obj.track0, obj.track0)
+
+obj.load("figure", "四角形", color1, obj.track0)
+obj.effect("クリッピング", "左", (obj.track1 / 200) * obj.track0, "右", (obj.track1 / 200) * obj.track0)
+--obj.aspect = obj.track1 / 100
+local yof = 0
+if (mode >= 1) then
+	obj.effect("クリッピング", "上", obj.track0/4)
+	yof = -obj.track0/2
+end
+obj.setoption("drawtarget","tempbuffer")
+obj.draw(0,yof,0,1,1,0,0,0)
+
+obj.setoption("drawtarget","framebuffer")
+
+if (diffcolor == 1) then
+obj.load("figure", "四角形", color2, obj.track0)
+else
+obj.load("figure", "四角形", color1, obj.track0)
+end
+obj.effect("クリッピング", "左", (obj.track1 / 200) * obj.track0, "右", (obj.track1 / 200) * obj.track0)
+
+if (mode >= 2) then
+	obj.effect("クリッピング", "上", obj.track0/2)
+end
+--obj.rz = 90
+obj.setoption("drawtarget","tempbuffer")
+obj.draw(0,0,0,1,1,0,0,90)
+
+--obj.copybuffer("obj","tmp")
+obj.setoption("drawtarget","framebuffer")
+obj.load("tempbuffer")
+obj.aspect = 0
+
+
+@三角へこみ矢印
+--track0:サイズ,0,2000,100,1
+--track1:縦横比,-100,100,-10,0.1
+--track2:へこみ,0,100,80,0.1
+--dialog:色/col,color=0xffffff;
+obj.load("figure", "三角形", color, obj.track0)
+obj.aspect = obj.track1 / 100
+obj.effect("マスク", "サイズ", obj.track0, "Y", ((100 - obj.track2)/100) * obj.track0, "type", 3, "マスクの反転", 1)
+
+@雲っぽい
+--track0:サイズ,0,9999,100,1
+--track1:ラスター横,0,500,210,0.1
+--track2:ラスター縦,0,999,162,0.1
+--track3:進行度,0,100,0,0.1
+--dialog:色1/col,color1=0xffffff;色2/col,color2=0xffffff;
+
+obj.load("figure", "三角形", color1, obj.track0)
+
+obj.aspect = -0.7
+
+obj.effect("マスク", "サイズ", "466", "縦横比", 70, "X", 302 * ((obj.track3 / 50) - 0.5))
+
+obj.effect("ラスター", "幅", obj.track1, "高さ", obj.track2, "周期", 2, "ランダム振幅", 1)
+
+--自分でつけてくれ
+--obj.effect("シャドー", "X", -24, "Y", 39, "濃さ", 100, "拡散", 0)
+
+@ランダムライン3D
+--track0:本数,1,400,10,1
+--track1:幅,0,100,2
+--track2:幅[+%],0,200,50,1
+--track3:斜閾値,0,300,50,1
+--dialog:色/col,col=0xff8000;ランダム変化/chk,chk=1;Z範囲,rrz=1000;
+n=obj.track0
+dw0=obj.track1
+dwr=obj.track2
+k=obj.track3
+w=obj.screen_w/2
+h=obj.screen_h/2
+L=math.sqrt(obj.screen_w^2,obj.screen_h/2^2)*2
+ran=0
+if(chk==1) then
+ran=obj.rand(0,100)
+end
+
+--obj.setoption("dst","tmp",w*2+100,h*2+100)
+obj.load("figure","四角形",col,2)
+for i=0,n-1 do
+  cx=obj.rand(-w,w,i,ran+0)
+  cy=obj.rand(-h,h,i,ran+1)
+  cz=obj.rand(-rrz,rrz,i,ran+5)
+  dw=dw0*(1+obj.rand(0,dwr,i,ran+2)/100)
+  l=math.sqrt((dw/2)^2+L^2)
+  r_jud=obj.rand(0,200+k,i,ran+3)
+  if(r_jud<=100) then
+    r=0
+  elseif(r_jud<=200) then
+    r=math.rad(90)
+  else
+    r=math.rad(obj.rand(0,180,i,ran+4))
+  end
+  x0=cx+math.cos(math.atan2(-L/2,-dw/2)+r)*l
+  x1=cx+math.cos(math.atan2(-L/2, dw/2)+r)*l
+  x2=cx+math.cos(math.atan2( L/2, dw/2)+r)*l
+  x3=cx+math.cos(math.atan2( L/2,-dw/2)+r)*l
+  y0=cy+math.sin(math.atan2(-L/2,-dw/2)+r)*l
+  y1=cy+math.sin(math.atan2(-L/2, dw/2)+r)*l
+  y2=cy+math.sin(math.atan2( L/2, dw/2)+r)*l
+  y3=cy+math.sin(math.atan2( L/2,-dw/2)+r)*l
+  
+  --ここにZのやつも
+  z0=cz+math.sin(math.atan2(-L/2,-dw/2)+r)*l
+  z1=cz+math.sin(math.atan2(-L/2, dw/2)+r)*l
+  z2=cz+math.sin(math.atan2( L/2, dw/2)+r)*l
+  z3=cz+math.sin(math.atan2( L/2,-dw/2)+r)*l
+  
+  obj.drawpoly(x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3)
+end
+--obj.load("tempbuffer")

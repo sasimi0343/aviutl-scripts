@@ -1,0 +1,162 @@
+w=1000
+h=1000
+defbase=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0002_back.png
+{
+id=hat_back
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0002_back.png
+}
+{
+id=hair_back
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0004 (大).png
+shake=1
+shake_y=-100
+}
+{
+id=kazari_back
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0010 (大).png
+}
+{
+id=hontai
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0012 (大).png
+}
+{
+id=hontai_front
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0013 (大).png
+}
+{
+id=hair_tail_right
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0014 (大).png
+shake=1
+shake_y=-100
+}
+{
+id=head
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0016 (大).png
+}
+{
+id=hair_front
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0017 (大).png
+shake=1
+shake_y=-100
+}
+{
+id=hair_tail_left
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0021 (大).png
+shake=1
+shake_y=-100
+}
+{
+id=head_shadow
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0027 (大).png
+alpha=0.7
+blend=3
+}
+{
+id=hat_front
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0002_front.png
+}
+{
+id=arm_right
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0011 (大).png
+}
+{
+id=hand_right
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0020 (大).png
+}
+{
+id=arm_left
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\バラシ\タイムライン1_0019 (大).png
+}
+{
+id=eye
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\目\魔理沙t1a目 (5) (大).png
+blindfile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\目\魔理沙t1a目 (27) (大).png
+filprefix=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\目\魔理沙t1a目 (
+filsuffix=) (大).png
+}
+{
+id=mouth
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\口\魔理沙t1a口 (18) (大).png
+filprefix=E:\downloadsssssssssssssss\立ち絵\うさ義式2th：霧雨魔理沙verく\魔理沙verき低画質\口\魔理沙t1a口 (
+filsuffix=) (大).png
+}

@@ -1,0 +1,172 @@
+@水玉
+--track0:Xずれ,0,999,50,0.1
+--track1:X間隔,0,999,100,0.1
+--track2:Y間隔,0,999,50,0.1
+--dialog:X個数,countx=40;Y個数,county=15;どんどん小さくする/chk,smaller=0;
+
+for i=1,county do
+	for l=1,countx do
+		if (i%2 == 1) then
+			obj.ox = l * obj.track1 - obj.track0
+		else
+			obj.ox = l * obj.track1
+		end
+		obj.oy = i * obj.track2
+		if (smaller == 1) then
+			obj.zoom = 1 - (i/county)
+		end
+		obj.draw()
+	end
+end
+
+@ウェーブ消灯
+--track0:間隔,1,999,5,1
+--track1:消灯時間,1,999,10,1
+--track2:X間隔,-9999,9999,0,0.1
+--dialog:制限時間で終了/chk,timeup=0;
+local count = math.floor(obj.frame/obj.track0)
+local total = math.floor(obj.totalframe/obj.track0)+1
+
+for i=0,total do
+	if (i > count or ((timeup) and (i * obj.track0) + obj.track1) > obj.totalframe) then
+		break
+	end
+	if (not ((i * obj.track0) + obj.track1 < obj.frame) ) then
+		obj.alpha = 1.0 - ((obj.frame - (obj.track0 * i)) / obj.track1)
+		obj.draw(i * obj.track2)
+	end
+	
+end
+
+@びよーんグリッチ
+--track0:Xずれ,-200,200,-50,1
+
+obj.draw()
+
+for i=1,math.abs(obj.track0) do
+
+if (obj.track0 >= 0) then
+obj.draw(i)
+else
+obj.draw(-i)
+end
+
+end
+
+@Rect型クリッピング
+--track0:X,0,8000,0,1
+--track1:Y,0,8000,0,1
+--track2:サイズX,0,8000,0,1
+--track3:サイズY,0,8000,0,1
+--dialog:中心位置変更/chk,cen=false;
+
+local w,h = obj.getpixel()
+
+obj.effect("クリッピング", "上", obj.track1, "下", h - obj.track1 - obj.track3, "左", obj.track0, "右", w - obj.track0 - obj.track2, "中心の位置を変更", cen)
+
+@Rect型アニメーション
+--track0:サイズX,0,8000,0,1
+--track1:サイズY,0,8000,0,1
+--dialog:開始X,x=0;開始Y,y=0;FPS,fps=30;中心位置変更/chk,cen=false;縦方向/chk,ver=false;
+
+local rf = math.floor(obj.frame * (fps / obj.framerate))
+local w,h = obj.getpixel()
+
+local ax = x + (obj.track0 * rf)
+local ay = y + (obj.track1 * rf)
+if (ver == 1) then
+ax = x
+else
+ay = y
+end
+
+
+obj.effect("クリッピング", "上", ay, "下", h - ay - obj.track1, "左", ax, "右", w - ax - obj.track0, "中心の位置を変更", cen)
+
+--obj.load("text", ax .. ", " .. ay)
+
+@線分伸ばし
+--track0:伸び,0,3000,100,1
+--track1:場所,-9999,9999,0,1
+--track2:向き,0,4,0,1
+
+local muki = "上"
+local mo = "下"
+
+local mx = 0
+local my = 0
+
+local mw = obj.w
+
+if (obj.track2 == 0) then
+	muki = "上"
+	mo = "下"
+	mx = 0
+	my = -1
+	mw = obj.h
+elseif (obj.track2 == 1) then
+	muki = "下"
+	mo = "上"
+	mx = 0
+	my = 1
+	mw = obj.h
+elseif (obj.track2 == 2) then
+	muki = "左"
+	mo = "右"
+	mx = -1
+	my = 0
+	mw = obj.w
+elseif (obj.track2 == 3) then
+	muki = "右"
+	mo = "左"
+	mx = 1
+	my = 0
+	mw = obj.w
+end
+
+obj.copybuffer("tmp", "obj")
+
+obj.effect("クリッピング", muki, obj.track1)
+obj.draw()
+
+--obj.copybuffer("obj", "tmp")
+obj.load("tempbuffer")
+
+obj.effect("クリッピング", mo, mw-obj.track1)
+obj.draw(obj.track0 * mx,obj.track0 * my)
+
+obj.effect("クリッピング", muki, obj.track1-1)
+obj.effect("領域拡張", muki, obj.track0, "塗りつぶし", 1)
+obj.draw()
+
+@モーションブラーもどき
+
+if (mbdata == nil) then
+mbdata = {}
+end
+
+if (mbdata[obj.layer] == nil) then
+mbdata[obj.layer] = {}
+end
+
+obj.draw()
+for i=0,obj.frame do
+local v = mbdata[obj.layer][i]
+obj.cx = v.x - obj.x
+obj.cy = v.y - obj.y
+obj.draw(v.x, v.y)
+end
+
+if (mbdata[obj.layer][obj.frame] == nil) then
+mbdata[obj.layer][obj.frame] = {}
+end
+
+mbdata[obj.layer][obj.frame].x = obj.x
+mbdata[obj.layer][obj.frame].y = obj.y
+
+@ランダム色変化
+--track0:色相範囲,0,360,3,0.1
+--track1:彩度範囲,0,100,10,0.1
+--track2:輝度,0,100,5,0.1
+
+obj.effect("色調補正", "色相", rand(-obj.track0, obj.track0, obj.index, 0), "彩度", 100 + rand(-obj.track1, obj.track1, obj.index, 0), "輝度", 100 + rand(-obj.track2, obj.track2, obj.index, 0))

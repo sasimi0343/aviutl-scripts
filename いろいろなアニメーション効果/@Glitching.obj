@@ -1,0 +1,54 @@
+@RandomPixel
+--track0:Xサイズ,0,9999,100,1
+--track1:Yサイズ,0,9999,100,1
+local w=obj.track0/2
+local h=obj.track1/2
+for i=-w/2,w do
+	for l=-h/2,h do
+		--debug_print(tostring(i) .. "," .. tostring(l))
+		obj.pixeloption("put","frm")
+		obj.pixeloption("type", "rgb")
+		obj.pixeloption("blend")
+		obj.putpixel(i + obj.x + (obj.screen_w/2), l + obj.y + (obj.screen_h/2), obj.rand(0, 255, l*i*4), obj.rand(0, 255, l*i*4+1), obj.rand(0, 255, l*i*4+2), obj.rand(0, 1, l*i*4+3))
+	end
+end
+
+@RandomPixel_Portable
+--track0:Xサイズ,0,9999,100,1
+--track1:Yサイズ,0,9999,100,1
+--dialog:数,count=20;切り替えフレーム,togfr=1;
+local w=obj.track0/2
+local h=obj.track1/2
+for i=1,count do
+	obj.load("figure", "四角形", RGB(obj.rand(0, 255, i*4, math.ceil(obj.frame/togfr)), obj.rand(0, 255, i*4+1, math.ceil(obj.frame/togfr)), obj.rand(0, 255, i*4+2, math.ceil(obj.frame/togfr))), 100)
+	obj.effect("ノイズ", "type", 3, "seed", i * math.ceil(obj.frame/togfr))
+	obj.drawpoly(-w,-h,0,w,-h,0,w,h,0,-w,h,0)
+	
+end
+
+@Row
+--track0:サイズ,0,5000,10,1
+--track1:縦横比,-100,100,0,1
+--track2:X数,0,500,10,1
+--track3:Y数,0,500,10,1
+--dialog:Seed,seed=1;切り替えフレーム,togfr=1;色をつけない/chk,nocolor=false;
+if (nocolor) then
+obj.load("figure", "四角形", 0xffffff, obj.track0)
+else
+obj.load("figure", "四角形", RGB(obj.rand(0, 255, seed*4, math.ceil(obj.frame/togfr)), obj.rand(0, 255, seed*4+1, math.ceil(obj.frame/togfr)), obj.rand(0, 255, seed*4+2, math.ceil(obj.frame/togfr))), obj.track0)
+end
+obj.aspect = obj.track1
+obj.effect("ノイズ", "type", 3, "seed", seed * math.ceil((obj.frame+1)/togfr))
+for x=0,obj.track2 do
+	for y=0,obj.track3 do
+		obj.draw(x*obj.w, y*obj.h, 0)
+	end
+end
+
+@Line
+--track0:太さ,0,200,1,1
+--dialog:anchor,pos={-20,20,20,-20};色/col,color=0xffffff;
+obj.setanchor("pos", 2, "line")
+obj.load("figure", "四角形", color, 1)
+
+obj.drawpoly(pos[1]-obj.track0,pos[2],0,pos[1],pos[2]-obj.track0,0,pos[3]+obj.track0,pos[4],0,pos[3],pos[4]+obj.track0,0)

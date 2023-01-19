@@ -1,0 +1,12 @@
+@固定グリッチ(ピクセル型の雨)
+--track0:Xピクセル,-9999,9999,2,0.1
+--track1:Yピクセル,-9999,9999,10,0.1
+--track2:個数,0,999,50,1
+obj.load("framebuffer")
+for i=0,obj.track2 do
+    obj.effect("クリッピング","上",obj.rand(0,obj.h,i*2),"左",obj.rand(0,obj.w,i*2+1),"下",obj.h-obj.rand(0,obj.h,i*2)-obj.track1,"右",obj.w-obj.rand(0,obj.w,i*2+1)-obj.track0)
+    obj.ox = obj.rand(0,obj.w,i*3)
+    obj.oy = obj.rand(0,obj.h,i*3+1)
+    obj.draw()
+    obj.effect("クリッピング","上",-(obj.rand(0,obj.h,i*2)),"左",-(obj.rand(0,obj.w,i*2+1)),"下",-(obj.h-obj.rand(0,obj.h,i*2)-obj.track1),"右",-(obj.w-obj.rand(0,obj.w,i*2+1)-obj.track0))
+end

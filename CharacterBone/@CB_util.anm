@@ -1,0 +1,18 @@
+@OriginRotation
+--track0:X‰ñ“],-720,720,0,0.1
+--track1:Y‰ñ“],-720,720,0,0.1
+--track2:Z‰ñ“],-720,720,0,0.1
+--track3:Z‚¸‚ê,-720,720,0,0.1
+--dialog:X’†S,orx=0;Y’†S,ory=0;Z’†S,orz=0;’†S‚ğ‡‚í‚¹‚é,center=0;debug/chk,debugshow=0;
+
+obj.rz = obj.track2
+local dist = math.sqrt(math.pow(orx, 2) + math.pow(ory, 2))
+local rad = math.rad(obj.track2 - 90 + obj.track3)
+obj.ox = (math.sin(-rad) * -dist) + math.abs(orx)
+obj.oy = (math.cos(-rad) * -dist)
+if (debugshow) then
+obj.draw()
+obj.load("figure", "‰~", 0xffffff, 10, 4000)
+obj.effect("‰æ‚è", "‘¾‚³", 5)
+obj.draw(orx, ory)
+end

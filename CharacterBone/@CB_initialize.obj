@@ -1,0 +1,53 @@
+local made = false
+
+@TemplateFile
+--dialog:pos,pos={0,200};
+
+local cbformat = require("cb_format")
+
+if (not made and pos[2] < -20) then
+io.output(obj.getinfo("script_path") .. "\\file.cbau")
+local cb = cbformat.CreateNewCB()
+cb:AddBone("leftarm", "<NIL>", -40, 0, 0, 0)
+cb:AddBone("rightarm", "<NIL>", 40, 0, 0, 0)
+io.write(cbformat.CBToString(cb))
+io.close()
+made = true
+elseif (made and pos[2] > 200) then
+made = false
+end
+
+if (not made) then
+obj.load("figure", "背景")
+obj.draw()
+
+obj.load("figure", "背景", 0x333333)
+obj.draw(0, -550)
+
+obj.setfont("MS UI Gothic", 40, 0, 0x888888, 0x000000)
+obj.oy = 0
+obj.load("text", "レバーを上げるとファイルが作成されます。")
+obj.draw(0, 25)
+
+else
+
+obj.load("figure", "背景", 0xeeeeff)
+obj.draw()
+
+obj.load("figure", "背景", 0x333333)
+obj.draw(0, 720)
+
+obj.setfont("MS UI Gothic", 40, 0, 0x888888, 0x000000)
+obj.load("text", "ファイルが作成されました。")
+obj.draw()
+
+obj.load("text", "レバーを下げてください。")
+obj.draw(0, 70)
+
+end
+
+obj.setanchor("pos", 1)
+obj.load("figure", "円", 0x444444, 40, 4000)
+obj.ox = pos[1]
+obj.oy = pos[2]
+obj.draw()

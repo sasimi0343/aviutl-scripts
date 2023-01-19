@@ -1,0 +1,48 @@
+@ビート
+--track0:拡大率,-100,100,20,0.1
+--track1:オフセット,-100,100,0,0.1
+--dialog:色/col,color=0x00ff00;
+
+local function outExpo(t, b, c, d)
+  if t == d then
+    return b + c
+  else
+    return c * 1.001 * (-math.pow(2, -10 * t / d) + 1) + b
+  end
+end
+
+local function inExpo(t, b, c, d)
+  if t == 0 then
+    return b
+  else
+    return c * math.pow(2, 10 * (t / d - 1)) + b - c * 0.001
+  end
+end
+
+obj.draw()
+w=obj.h/2 * outExpo(obj.frame, obj.track1, obj.track0, obj.totalframe)
+h=obj.h/2 * outExpo(obj.frame, obj.track1, obj.track0, obj.totalframe)
+obj.load("figure","四角形",color,100, 2)
+obj.alpha = inExpo(obj.frame, 1, -1, obj.totalframe)
+obj.drawpoly(-w,-h,0,w,-h,0,w,h,0,-w,h,0)
+
+@かっこいい文字
+--track0:X座標,-999,999,100,0.1
+--track1:Y座標,-999,999,100,0.1
+local function outExpo(t, b, c, d)
+ 
+if t == d then
+    return b + c
+  else
+    return c * 1.001 * (-math.pow(2, -10 * t / d) + 1) + b
+  end
+
+end
+
+if (obj.index%2 == 0) then
+if (obj.track0 == 0) then obj.cx = 0 else obj.ox = outExpo(obj.frame, obj.track0, -obj.track0, obj.totalframe) end
+if (obj.track1 == 0) then obj.cy = 0 else obj.oy = outExpo(obj.frame, obj.track1, -obj.track1, obj.totalframe) end
+else
+if (obj.track0 == 0) then obj.cx = 0 else obj.ox = outExpo(obj.frame, -obj.track0, obj.track0, obj.totalframe) end
+if (obj.track1 == 0) then obj.cy = 0 else obj.oy = outExpo(obj.frame, -obj.track1, obj.track1, obj.totalframe) end
+end

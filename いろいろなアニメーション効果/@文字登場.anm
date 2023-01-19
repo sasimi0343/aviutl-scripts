@@ -1,0 +1,343 @@
+@T加減速And点滅
+--track0:X,-9999,9999,0,0.1
+--track1:Y,-9999,9999,0,0.1
+--track2:透明度,0,100,50,0.1
+--dialog:フェード色/col,fadc=0xff9900;時間,tim=10;シード値,seed=1;ずれ,zure=5;
+
+-- t = elapsed time
+-- b = begin
+-- c = change == ending - beginning
+-- d = duration (total time)
+local function outExpo(t, b, c, d)
+  if t == d then
+    return b + c
+  else
+    return c * 1.001 * (math.pow(2, -10 * t / d) + 1) + b
+  end
+end
+
+--debug_print(tostring(obj.index * (tim-zure)) .. ", " .. tostring(obj.frame))
+--debug_print(tostring((obj.index + 1) * (tim) - zure))
+if (obj.index * (tim-zure) <= obj.frame and (obj.index + 1) * (tim) - zure > obj.frame) then
+  --debug_print("test")
+    obj.cx = outExpo(obj.frame - (obj.index * (tim-zure)), obj.track0, -obj.track0, tim)
+    obj.cy = outExpo(obj.frame - (obj.index * (tim-zure)), obj.track1, -obj.track1, tim)
+elseif (obj.index * (tim-zure) > obj.frame) then
+  --debug_print("test")
+    obj.cx = obj.track0
+    obj.cy = -obj.track1
+end
+obj.alpha = obj.rand(obj.track2, 100, seed * obj.index) / 100
+
+@Tランダム減速登場
+--track0:間隔,0,9999,0,1
+--track1:時間,0,8000,0,1
+--track2:範囲,0,1000,0,1
+
+local function outExpo(t, b, c, d)
+  if t == d then
+    return b + c
+  else
+    return c * 1.001 * (math.pow(2, -10 * t / d) + 1) + b
+  end
+end
+
+local tim = obj.track0 * obj.index
+if (tim < obj.frame) then
+	if (obj.track1 < obj.frame - tim) then
+		obj.cx = 0
+		obj.cy = 0
+	else
+		local x = rand(-obj.track2, obj.track2, obj.index*2+1, 1)
+		local y = rand(-obj.track2, obj.track2, obj.index*2+2, 1)
+		
+		debug_print(obj.frame - tim)
+
+		obj.cx = outExpo(obj.frame - tim, x, -x, obj.track1)
+		obj.cy = outExpo(obj.frame - tim, y, -y, obj.track1)-1
+	end
+else
+	obj.alpha = 0
+end
+
+@T動的字間
+--track0:字間,-10,999,0,0.01
+--track1:行間,-10,999,0,0.01
+
+obj.ox = obj.ox * (obj.track0+1)
+obj.oy = obj.oy * (obj.track1+1)
+
+@Tランダム方向マイナスあり
+--track0:揃っている,-100,100,50,0.01
+--track1:範囲,0,2000,0,0.1
+--dialog:シード,seed=0;モード(縦1横2両0),mode=0;
+
+if (obj.track0 == 0) then
+
+if (mode == 0 or mode == 2) then obj.cx = 0 end
+if (mode == 0 or mode == 1) then obj.cy = 0 end
+
+else
+
+local x = rand(-obj.track1, obj.track1, obj.index*seed+1, 1)
+local y = rand(-obj.track1, obj.track1, obj.index*seed+2, 1)
+
+local ritu = (obj.track0 / 100)
+
+if (mode == 0 or mode == 2) then obj.cx = ritu * x end
+if (mode == 0 or mode == 1) then obj.cy = ritu * y end
+
+end
+
+@Tランダム回転マイナスあり
+--track0:揃っている,-100,100,50,0.01
+--track1:範囲Z,0,720,0,0.1
+--track2:範囲X,0,720,0,0.1
+--track3:範囲Y,0,720,0,0.1
+--dialog:シード,seed=0;3D回転/chk,istd=0;
+
+if (obj.track0 == 0) then
+	obj.rz = 0
+	if (istd == 1) then
+		obj.rx = 0
+		obj.ry = 0
+	end
+else
+	local ritu = (obj.track0 / 100)
+	
+	local rz = rand(-obj.track1, obj.track1, (obj.index+1)*seed+1, 1)
+	
+	obj.rz = rz * ritu
+	
+	if (istd == 1) then
+		
+		local rx = rand(-obj.track2, obj.track2, (obj.index+1)*seed+2, 1)
+		local ry = rand(-obj.track3, obj.track3, (obj.index+1)*seed+3, 1)
+		
+		obj.rx = rx * ritu
+		obj.ry = ry * ritu
+	end
+end
+
+@T文字ずらし
+--track0:Xずれ,-9999,9999,10,0.1
+--track1:Yずれ,-9999,9999,0,0.1
+
+obj.ox = obj.index * obj.track0
+obj.oy = obj.index * obj.track1
+
+@Tカーブ使用登場
+--track0:間隔,0,9999,3,1
+--track1:時間,0,9999,50,1
+--dialog:ID,par=0;X開始,xs=0;Y開始,ys=0;Z開始,zs=0;X終了,xe=0;Y終了,ye=0;Z終了,ze=0;退場と同時進行/chk,sameleave=0;加算方式/chk,adds=0;
+
+function getvalue(st, ed, ratio)
+local module_name = "curve_editor"
+if not package.loaded[module_name] then
+	package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
+	require(module_name)
+	package.preload[module_name] = nil
+end
+
+--local index,ratio = math.modf(obj.getpoint"index")
+--local ratio = obj.time / obj.totaltime
+--index = トラックバーの値index
+--ratio = index間のNormalizedTime (0 .. 1)
+
+return curve_editor.get_result(par, ratio, st, ed)
+end
+
+local ofscx = 0
+local ofscy = 0
+local ofscz = 0
+
+if (adds == 1) then
+	ofscx = obj.cx
+	ofscy = obj.cy
+	ofscz = obj.cz
+end
+
+local tim = obj.track0 * obj.index
+if (tim < obj.frame) then
+	if (obj.track1 < obj.frame - tim) then
+		if (not (sameleave == 1)) then
+			obj.cx = xe
+			obj.cy = ye
+			obj.cz = ze
+		else
+			obj.alpha = 0
+		end
+	else
+		if (sameleave == 1) then
+			local ra1 = (obj.frame - tim) / obj.track1
+			local ra2 = 1 - ra1
+			
+			obj.cx = ofscx + getvalue(xs,xe,ra1) + getvalue(xs,xe,ra2)
+			obj.cy = ofscy + getvalue(ys,ye,ra1) + getvalue(ys,ye,ra2)
+			obj.cz = ofscz + getvalue(zs,ze,ra1) + getvalue(zs,ze,ra2)
+		else
+			local ra = (obj.frame - tim) / obj.track1
+			
+			obj.cx = ofscx + getvalue(xs,xe,ra)
+			obj.cy = ofscy + getvalue(ys,ye,ra)
+			obj.cz = ofscz + getvalue(zs,ze,ra)
+		end
+	end
+else
+	if (not (adds == 1)) then obj.alpha = 0 end
+end
+
+@Tカーブ使用登場(回転)
+--track0:間隔,0,9999,3,1
+--track1:時間,0,9999,50,1
+--dialog:ID,par=0;X開始,xs=0;Y開始,ys=0;Z開始,zs=0;X終了,xe=0;Y終了,ye=0;Z終了,ze=0;
+
+function getvalue(st, ed, ratio)
+local module_name = "curve_editor"
+if not package.loaded[module_name] then
+	package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
+	require(module_name)
+	package.preload[module_name] = nil
+end
+
+--local index,ratio = math.modf(obj.getpoint"index")
+--local ratio = obj.time / obj.totaltime
+--index = トラックバーの値index
+--ratio = index間のNormalizedTime (0 .. 1)
+
+return curve_editor.get_result(par, ratio, st, ed)
+end
+
+local tim = obj.track0 * obj.index
+if (tim < obj.frame) then
+	if (obj.track1 < obj.frame - tim) then
+		obj.rx = xe
+		obj.ry = ye
+		obj.rz = ze
+	else
+		local ra = (obj.frame - tim) / obj.track1
+		
+		obj.rx = getvalue(xs,xe,ra)
+		obj.ry = getvalue(ys,ye,ra)
+		obj.rz = getvalue(zs,ze,ra)
+	end
+else
+	obj.alpha = 0
+end
+
+@Tカーブ使用ランダム方向登場
+--track0:間隔,0,9999,3,1
+--track1:時間,0,9999,50,1
+--track2:範囲,0,9999,100,0.01
+--dialog:ID,par=0;seed,seed=0;Z軸を含む/chk,conz=0;方向を90/chk,houkou=0;最初で出現/chk,firstdrop=0;加算方式/chk,adds=0;
+
+function getvalue(st, ed, ratio)
+local module_name = "curve_editor"
+if not package.loaded[module_name] then
+	package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
+	require(module_name)
+	package.preload[module_name] = nil
+end
+
+--local index,ratio = math.modf(obj.getpoint"index")
+--local ratio = obj.time / obj.totaltime
+--index = トラックバーの値index
+--ratio = index間のNormalizedTime (0 .. 1)
+
+return curve_editor.get_result(par, ratio, st, ed)
+end
+
+local muki = math.floor(rand(0, 1, seed, 1))
+
+local tim = obj.track0 * obj.index
+
+if (firstdrop == 1) then
+	tim = tim - 1
+end
+
+if (tim < obj.frame) then
+	if (obj.track1 < obj.frame - tim) then
+		obj.cx = 0
+		obj.cy = 0
+		obj.cz = 0
+	else
+		local ra = (obj.frame - tim) / obj.track1
+		
+		local x = getvalue(rand(0, obj.track2, seed*3, 1),0,ra)
+		local y = getvalue(rand(0, obj.track2, seed*3+1, 1),0,ra)
+		
+		if (adds) then
+			x = obj.cx + x
+			y = obj.cy + y
+		end
+		
+		if (((houkou == 1) and (muki == 0)) or (houkou == 0)) then obj.cx = x else obj.cx = 0 end
+		if (((houkou == 1) and (muki == 1)) or (houkou == 0)) then obj.cy = y else obj.cy = 0 end
+		if (conz == 1) then obj.cz = getvalue(rand(0, obj.track2, seed*3+2, 1),0,ra) else obj.cz = 0 end
+		
+
+	end
+else
+	obj.alpha = 0
+end
+
+@Tカーブ使用ランダム方向90度登場
+--track0:間隔,0,9999,3,1
+--track1:時間,0,9999,50,1
+--track2:範囲,0,9999,100,0.01
+--dialog:ID,par=0;seed,seed=0;Z軸を含む/chk,conz=0;最初で出現/chk,firstdrop=0;加算方式/chk,adds=0;退場/chk,leave=0;
+
+function getvalue(st, ed, ratio)
+local module_name = "curve_editor"
+if not package.loaded[module_name] then
+	package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
+	require(module_name)
+	package.preload[module_name] = nil
+end
+
+--local index,ratio = math.modf(obj.getpoint"index")
+--local ratio = obj.time / obj.totaltime
+--index = トラックバーの値index
+--ratio = index間のNormalizedTime (0 .. 1)
+
+return curve_editor.get_result(par, ratio, st, ed)
+end
+
+local muki = math.floor(rand(0, 1, seed, 1))
+
+local tim = obj.track0 * obj.index
+
+if (firstdrop == 1) then
+	tim = tim - 1
+end
+
+if (tim < obj.frame) then
+	if (obj.track1 < obj.frame - tim) then
+		obj.cx = 0
+		obj.cy = 0
+		obj.cz = 0
+	else
+		local ra = (obj.frame - tim) / obj.track1
+		
+		local x = getvalue(obj.track2,0,ra)
+		local y = getvalue(obj.track2,0,ra)
+		
+		if (leave == 1) then
+			x = getvalue(0,obj.track2,ra)
+			y = getvalue(0,obj.track2,ra)
+		end
+		
+		if (adds == 1) then
+			x = obj.cx + x
+			y = obj.cy + y
+		end
+		
+		if (muki == 0) then obj.cx = x else obj.cx = 0 end
+		if (muki == 1) then obj.cy = y else obj.cy = 0 end
+		if (conz == 1) then obj.cz = getvalue(rand(0, obj.track2, seed*3+2, 1),0,ra) else obj.cz = 0 end
+		
+
+	end
+else
+	obj.alpha = 0
+end

@@ -1,0 +1,37 @@
+@座標
+--track0:X座標,-9999,9999,0,0.1
+--track1:Y座標,-9999,9999,0,0.1
+--track2:Z座標,-9999,9999,0,0.1
+
+cam = obj.getoption("camera_param") -- カメラデータの取得
+
+cam.x = cam.x + obj.track0
+cam.y = cam.y + obj.track1
+cam.z = cam.z + obj.track2
+
+obj.setoption("camera_param",cam)
+
+@傾き
+--track0:傾き,-2000,2000,0,0.1
+cam = obj.getoption("camera_param")
+
+cam.rz = cam.rz + obj.track0
+
+obj.setoption("camera_param",cam)
+
+@座標(目標固定)
+--track0:X座標,-9999,9999,0,0.1
+--track1:Y座標,-9999,9999,0,0.1
+--track2:Z座標,-9999,9999,0,0.1
+
+cam = obj.getoption("camera_param") -- カメラデータの取得
+
+cam.x = cam.x + obj.track0
+cam.y = cam.y + obj.track1
+cam.z = cam.z + obj.track2
+
+cam.tx = cam.tx + obj.track0
+cam.ty = cam.ty + obj.track1
+cam.tz = cam.tz + obj.track2
+
+obj.setoption("camera_param",cam)
