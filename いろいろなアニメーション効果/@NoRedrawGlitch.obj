@@ -1,0 +1,12 @@
+@Draw
+if (obj.frame == 0) then
+else
+obj.load("framebuffer")
+obj.copybuffer("obj", "tmp")
+end
+@Up
+if (obj.frame == 0) then
+obj.copybuffer("tmp", "obj")
+else
+obj.copybuffer("tmp", "frm")
+end

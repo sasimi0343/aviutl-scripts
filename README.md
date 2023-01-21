@@ -16,3 +16,10 @@ example‚É‚¤‚³‹`‚³‚ñ‚Ì—§‚¿ŠG‚Å‚Ìcbau‚Ì‹Lq—áÚ‚¹‚Ä‚¨‚­‚Ì‚ÅŽQl‚É‚µ‚Ä\•¶‚ÍŽ@‚µ‚Ä‚
 
 ##‚¢‚ë‚¢‚ë‚ÈƒAƒjƒ[ƒVƒ‡ƒ“Œø‰Ê
 –{“–‚É‚¢‚ë‚¢‚ë‚Å‚·B“®ìd‚¢‚Ì‚ÉŽù—v‚ª‘S‚­‚È‚¢‚Æ‚¢‚¤Š®‘S‚É’n—‹‚È‚â‚Â‚à‚ ‚é‚Ì‚Å‚²’ˆÓ‚­‚¾‚³‚¢B
+
+### NoRedrawGlitch
+‚È‚ñ‚©‚ß‚¿‚á‚­‚¿‚á‚È‰æ–Ê‚ðì‚è‚Ü‚·B
+1. ˆê”Ôã‚ÌƒŒƒCƒ„[‚ÉƒJƒXƒ^ƒ€ƒIƒuƒWƒFƒNƒguDraw@NoRedrawGlitchv‚ðÝ’uB
+2. ‚¢‚­‚Â‚©‚ÌƒIƒuƒWƒFƒNƒg‚ð‚»‚Ì‰º‚ÌƒŒƒCƒ„[‚É”z’uB
+3. ÅŒã‚Éˆê”Ô‰º‚ÌƒŒƒCƒ„[‚ÉƒJƒXƒ^ƒ€ƒIƒuƒWƒFƒNƒguUp@NoRedrawGlitchv‚ðÝ’uB
+example‚É‚±‚Ì—á‚ð’u‚¢‚Ä‚¨‚«‚Ü‚·BŽQl‚É‚µ‚Ä‚­‚¾‚³‚¢B
