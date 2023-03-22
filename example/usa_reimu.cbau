@@ -182,6 +182,24 @@ shake=1
 shake_y=-200
 }
 {
+id=body_kazari
+parent=<NIL>
+ox=0
+oy=0
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\バラシ\バラシ (28) (大).png
+}
+{
+id=arm_left
+parent=<NIL>
+ox=6
+oy=-225
+cx=0
+cy=0
+deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\バラシ\バラシ27_center.png
+}
+{
 id=hair_kazari_left
 parent=<NIL>
 ox=0
@@ -202,15 +220,6 @@ cy=0
 deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\バラシ\バラシ (32) (大).png
 shake=1
 shake_y=-200
-}
-{
-id=body_kazari
-parent=<NIL>
-ox=0
-oy=0
-cx=0
-cy=0
-deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\バラシ\バラシ (28) (大).png
 }
 {
 id=eye
@@ -234,13 +243,4 @@ cy=0
 deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\口\口 (19) (大).png
 filprefix=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\口\口 (
 filsuffix=) (大).png
-}
-{
-id=arm_left
-parent=<NIL>
-ox=6
-oy=-225
-cx=0
-cy=0
-deffile=E:\downloadsssssssssssssss\立ち絵\霊夢verく\低解像度\バラシ\バラシ27_center.png
 }

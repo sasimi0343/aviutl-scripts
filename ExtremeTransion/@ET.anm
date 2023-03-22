@@ -1,0 +1,93 @@
+
+@[PositionCalibration]
+obj.cx = 0
+obj.cy = 0
+obj.cz = 0
+
+@[ShowDelayed]
+--dialog:[Global]Delay,gd=1;
+if (obj.frame <= obj.index * gd) then
+	obj.alpha = 0
+end
+
+@Blink
+--track0:Freq,0,999,1,1
+--track1:Time,1,999,1,1
+--track2:Alpha,0,1,0,0.01
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]Debug/chk,dbg=0;
+
+local et = require("et")
+et.Blink(obj, gt, gd, {
+    freq = obj.track0,
+    tim = obj.track1,
+    alpha = obj.track2,
+    dbg=dbg
+})
+
+@Raster
+--track0:Freq,0,999,1,1
+--track1:Width,0,999,100,1
+--track2:Height,0,999,100,1
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Vertical/chk,vert=0;Random/chk,isrand=0;
+
+local et = require("et")
+et.Raster(obj, gt, gd, {
+    freq = obj.track0,
+    width = obj.track1,
+    height = obj.track2,
+    isvert = vert,
+    isrand = isrand
+})
+
+@Move
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Start X,sx=0;Start Y,sy=0;Start Z,sz=0;End X,ex=0;End Y,ey=0;End Z,ez=0;Reverse Mode,revmode=0;
+
+local et = require("et")
+et.Move(obj, gt, gd, {
+    sx = sx,
+    sy = sy,
+    sz = sz,
+    ex = ex,
+    ey = ey,
+    ez = ez,
+    eas = eas,
+    revmode = revmode
+})
+
+@RandomMove90Deg
+--track0:Range,0,9999,100,0.1
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;
+
+local et = require("et")
+et.RandomMove90Deg(obj, gt, gd, {
+    range = obj.track0,
+    eas = eas,
+    seed = seed
+})
+
+@RandomPos
+--track0:Range,0,9999,100,0.1
+--track1:RangeChange,-9999,9999,0,0.1
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;Direction,dir=0;
+
+local et = require("et")
+et.RandomPos(obj, gt, gd, {
+    range = obj.track0,
+    eas = eas,
+    seed = seed,
+    dir = dir,
+    rangeChange = obj.track1
+})
+
+@Zoom
+--track0:Zoom,0,9999,100,0.1
+--track1:ZoomChange,-9999,9999,0,0.1
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;
+
+local et = require("et")
+et.Zoom(obj, gt, gd, {
+    zoom = obj.track0,
+    eas = eas,
+    seed = seed,
+    zoomchange = obj.track1
+})

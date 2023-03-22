@@ -1,25 +1,26 @@
 # aviutl-scripts
-�������܂ō���ė���Aviutl�̎���X�N���v�g�����ׂē���܂����B
-���������܂����삵�Ȃ��̂�A�O���v���O�C���ɗ���̂�����܂��B
+俺が今まで作って来たAviutlの自作スクリプトをすべて入れました。
+いくつかうまく動作しないのや、外部プラグインに頼るのもあります。
 
 ## CharacterBone
-�g���������G�ł��B���������������ƁA
-1. �K���ɐ}�`�I�u�W�F�N�g��z�u�B
-2. �A�j���[�V�������ʁuCharacterBase@CharacterBone�v��K�p
-2.1 �u�Q�Ɓv���玖�O�ɗp�ӂ���cbau�t�@�C�����Q�ƁB
-3. �A�j���[�V�������ʁuCharacterSettings@CharacterBone�v��K�p
-4. �A�j���[�V�������ʁuDraw@CharacterBone�v��K�p
+使い方が複雑です。ざっくり説明すると、
+1. 適当に図形オブジェクトを配置。
+2. アニメーション効果「CharacterBase@CharacterBone」を適用
+2.1 「参照」から事前に用意したcbauファイルを参照。
+3. アニメーション効果「CharacterSettings@CharacterBone」を適用
+4. アニメーション効果「Draw@CharacterBone」を適用
 
-### cbau���ĂȂ��˂�
-�Ǝ��̃t�H�[�}�b�g��p�����L�����N�^�[�t�@�C���ł��B
-example�ɂ����`����̗����G�ł�cbau�̋L�q��ڂ��Ă����̂ŎQ�l�ɂ��č\���͎@���Ă��������B
+### cbauってなんやねん
+独自のフォーマットを用いたキャラクターファイルです。
+exampleにうさ義さんの立ち絵でのcbauの記述例載せておくので参考にして構文は察してください。
+ちなみにパスに_centerがついているものは中心を変えている画像です。用意はそちら側でお願いします。
 
-## ���낢��ȃA�j���[�V��������
-�{���ɂ��낢��ł��B����d���̂Ɏ��v���S���Ȃ��Ƃ������S�ɒn���Ȃ������̂ł����ӂ��������B
+## いろいろなアニメーション効果
+本当にいろいろです。動作重いのに需要が全くないという完全に地雷なやつもあるのでご注意ください。
 
 ### NoRedrawGlitch
-�Ȃ񂩂߂��Ⴍ����ȉ�ʂ����܂��B
-1. ��ԏ�̃��C���[�ɃJ�X�^���I�u�W�F�N�g�uDraw@NoRedrawGlitch�v��ݒu�B
-2. �������̃I�u�W�F�N�g�����̉��̃��C���[�ɔz�u�B
-3. �Ō�Ɉ�ԉ��̃��C���[�ɃJ�X�^���I�u�W�F�N�g�uUp@NoRedrawGlitch�v��ݒu�B
-example�ɂ��̗��u���Ă����܂��B�Q�l�ɂ��Ă��������B
+なんかめちゃくちゃな画面を作ります。
+1. 一番上のレイヤーにカスタムオブジェクト「Draw@NoRedrawGlitch」を設置。
+2. いくつかのオブジェクトをその下のレイヤーに配置。
+3. 最後に一番下のレイヤーにカスタムオブジェクト「Up@NoRedrawGlitch」を設置。
+exampleにこの例を置いておきます。参考にしてください。

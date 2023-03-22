@@ -49,6 +49,7 @@ if (not( filpath == file) or obj.track0 == 1) then
 		bones[v.id].disp = nil
 		bones[v.id].sfile = nil
 		bones[v.id].debugsuru = false
+		bones[v.id].flip = false
 		
 		if (v.blend == nil) then
 			v.blend = 0
@@ -95,6 +96,7 @@ for k,v in pairs(bones) do
 	v.sfile = nil
 	v.debugsuru = false
 	v.alt = false
+	v.flip = false
 end
 
 if  (not (mouth == -1)) then
@@ -109,7 +111,7 @@ end
 
 @Bone
 --track0:Z‰ñ“],-720,720,0,0.1
---dialog:id,id="<NIL>";‘ã—ƒtƒ@ƒCƒ‹,afil=0;Alt/chk,altimg=0;debug/chk,debugsuru=0;debugpos,pos={};
+--dialog:id,id="<NIL>";‘ã—ƒtƒ@ƒCƒ‹,afil=0;Alt/chk,altimg=0;debug/chk,debugsuru=0;debugpos,pos={};”½“]/chk,flip=0;
 
 local cfil = afil
 
@@ -129,6 +131,7 @@ bone.rz = obj.track0
 bone.sfile = cfil
 bone.debugsuru = (debugsuru == 1)
 bone.alt = (altimg == 1)
+bone.flip = (flip == 1)
 
 if (debugsuru == 1) then
 
@@ -176,6 +179,10 @@ for k,v in pairs(cb.bones) do
 	end
 	
 	r = bones[v.id].rz
+	
+	if (bones[v.id].flip == true) then
+		obj.effect("”½“]", "¶‰E”½“]", 1)
+	end
 	
 	if (not (bones[v.id].disp == nil)) then
 		local disp = bones[v.id].disp

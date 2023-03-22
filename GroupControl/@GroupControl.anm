@@ -1,0 +1,194 @@
+@MAIN_初期化
+--dialog:Layer,initiallayer=1;
+if (initiallayer == obj.layer) then
+group = {}
+layer = -1
+x = 0
+y = 0
+z = 0
+zoom = 1
+alpha = 1
+aspect = 1
+rx = 0
+ry = 0
+rz = 0
+end
+
+@MAIN_図形
+--track0:サイズ,0,9999,100,1
+--track1:縦横比,-100,100,0,0.1
+--track2:ライン幅,0,9999,4000,1
+--dialog:図形/fig,figure="四角形";
+
+local groupcontrol = require("groupcontrol")
+local figure = groupcontrol.Initialize()
+
+table.insert(group, figure)
+
+@LIGHT_適用
+--dialog:Width,width=1920;Height,height=1080;Layer,finallayer=1;
+
+if (not (obj.layer == finallayer+initiallayer)) then
+	obj.effect("透明度", "透明度", 100)
+	--debug_print(obj.layer)
+else
+	obj.copybuffer("cache:groupcontrol_light", "obj")
+	obj.setoption("drawtarget","tempbuffer", width, height)
+	for i=0,finallayer do
+		local la = "layer" .. (i + initiallayer) .. "."
+		
+		if (not (obj.getvalue(la .. "x") == nil)) then
+			
+			x = obj.getvalue(la .. "x")
+			y = obj.getvalue(la .. "y")
+			z = obj.getvalue(la .. "z")
+			zoom = obj.getvalue(la .. "zoom")/100
+			alpha = obj.getvalue(la .. "alpha")
+			aspect = obj.getvalue(la .. "aspect")
+			rx = obj.getvalue(la .. "rx")
+			ry = obj.getvalue(la .. "ry")
+			rz = obj.getvalue(la .. "rz")
+			
+			obj.load("layer", (i + initiallayer), true)
+			obj.setoption("drawtarget","tempbuffer")
+			obj.draw(x-obj.x,y-obj.y,z-obj.z,zoom,alpha,rx,ry,rz)
+			
+		end
+	end
+	obj.load("layer", layer, false)
+	obj.copybuffer("obj", "cache:groupcontrol_light")
+	obj.setoption("drawtarget","tempbuffer")
+	obj.draw()
+	
+	obj.setoption("drawtarget","framebuffer")
+	obj.load("tempbuffer")
+end
+
+@LIGHT_上のオブジェクトにクリッピング
+--dialog:Layer,layer=1;薄さ,ususa=0;
+
+obj.copybuffer("cache:group_clipping1", "obj") --F
+
+local obj_p = {
+	ox = obj.ox,
+	oy = obj.oy,
+	oz = obj.oz,
+	zoom = obj.zoom,
+	aspect = obj.aspect,
+	rx = obj.rx,
+	ry = obj.ry,
+	rz = obj.rz,
+	alpha = obj.alpha,
+	cx = obj.cx,
+	cy = obj.cy,
+	cz = obj.cz,
+	x = obj.x,
+	y = obj.y,
+	h = obj.h,
+	w = obj.w
+};
+
+obj.setoption("drawtarget", "tempbuffer", obj.w, obj.h)
+obj.draw()
+
+obj.setoption("blend", "alpha_sub")
+obj.setoption("antialias", 1)
+obj.load("layer", initiallayer-layer, true) --T
+
+local la = "layer" .. (initiallayer-layer) .. "."
+
+if (not (obj.getvalue(la .. "x") == nil)) then
+
+	local wid = obj.w
+	local hei = obj.h
+	
+	x = obj.getvalue(la .. "x")
+	y = obj.getvalue(la .. "y")
+	z = obj.getvalue(la .. "z")
+	zoom = obj.getvalue(la .. "zoom")/100
+	alpha = obj.getvalue(la .. "alpha")
+	aspect = obj.getvalue(la .. "aspect")
+	rx = obj.getvalue(la .. "rx")
+	ry = obj.getvalue(la .. "ry")
+	rz = obj.getvalue(la .. "rz")
+	
+	--obj.effect("反転", "透明度反転", 1)
+	
+	obj.draw(x-obj.x,y-obj.y,z-obj.z,zoom,alpha,rx,ry,rz)
+	obj.copybuffer("cache:group_clipping2", "obj") --<T
+	obj.setoption("blend", 0)
+	
+	local pd_x = math.max(x - (wid/2) - obj_p.x + (obj_p.w/2), 0)
+	local pd_y = math.max(y - (hei/2) - obj_p.y + (obj_p.h/2), 0)
+	local pd_w = math.min(x + (wid/2) - obj_p.x + (obj_p.w/2), obj_p.w)
+	local pd_h = math.min(y + (hei/2) - obj_p.y + (obj_p.h/2), obj_p.h)
+	
+	--obj.setoption("drawtarget","framebuffer")
+	obj.load("tempbuffer")
+	obj.copybuffer("cache:group_clipping3", "obj")
+	obj.draw()
+	
+	obj.load("tempbuffer")
+	obj.copybuffer("obj", "cache:group_clipping1")
+	obj.draw()
+	
+	obj.load("tempbuffer")
+	obj.setoption("blend", "alpha_sub")
+	obj.copybuffer("obj", "cache:group_clipping3")
+	obj.draw()
+	for i=0,ususa do
+		obj.draw()
+	end
+	
+	obj.setoption("blend", 0)
+	obj.setoption("drawtarget","framebuffer")
+	obj.load("tempbuffer")
+	
+	local debugsuru = false
+	
+	if (debugsuru) then
+		obj.draw()
+		
+		obj.load("tempbuffer")
+		obj.copybuffer("obj", "cache:group_clipping3")
+		obj.draw(600)
+		
+		
+	end
+end
+
+obj.ox = obj_p.ox
+obj.oy = obj_p.oy
+obj.oz = obj_p.oz
+obj.zoom = obj_p.zoom
+obj.aspect = obj_p.aspect
+obj.rx = obj_p.rx
+obj.ry = obj_p.ry
+obj.rz = obj_p.rz
+obj.alpha = obj_p.alpha
+obj.cx = obj_p.cx
+obj.cy = obj_p.cy
+obj.cz = obj_p.cz
+
+@LIGHT_個別オブジェクト統一
+--dialog:Width,width=1920;Height,height=1080;
+
+if (obj.index == obj.num-1) then
+	obj.copybuffer("cache:group_eachobj", "obj")
+	
+	
+	obj.load("layer", layer, false)
+	obj.copybuffer("obj", "cache:groupcontrol_light")
+	obj.setoption("drawtarget","tempbuffer")
+	obj.draw()
+	
+	obj.setoption("drawtarget","framebuffer")
+	obj.load("tempbuffer")
+else
+	
+	if (obj.index == 0) then
+		obj.setoption("drawtarget","tempbuffer", width, height)
+	end
+	
+	obj.effect("透明度", "透明度", 100)
+end

@@ -1,0 +1,13 @@
+@InfiniteFrameBuffer
+--track0:Zoom,0,999,100,0.1
+--dialog:Maximum Count,maxcount=10;
+
+for i=0,maxcount do
+	
+	obj.load("framebuffer")
+	obj.ox = i * obj.x - (i * obj.x / 2)
+	obj.oy = i * obj.y - (i * obj.y / 2)
+	obj.zoom = math.pow(obj.track0/100, (i+1))
+	obj.draw()
+	
+end
