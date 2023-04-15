@@ -192,3 +192,51 @@ else
 	
 	obj.effect("“§–¾“x", "“§–¾“x", 100)
 end
+
+
+
+@[Cache] MemoryFrame
+--track0:Reset,0,1,0,1
+--dialog:Cache Size,cache=100;Final Layer,layer=99;
+
+if (ci == nil) then
+
+ci = {}
+ci.newest = 1
+ci.cache = {}
+function ci.set(id, frame, objs)
+	local ca = {}
+	ca.id = id
+	ca.frame = frame
+	ca.objs = objs
+	ci.cache[id] = ca
+end
+
+function ci.add(frame, objs)
+	ci.set(ci.newest, frame, objs)
+	ci.newest = ci.newest + 1
+	if (ci.newest > cache) then
+		ci.newest = 1
+	end
+end
+
+end
+
+if (obj.track0 == 1) then
+	obj.load("framebuffer")
+	obj.copybuffer("cache:memoryframe_cache_" .. ci.newest, "obj")
+	ci.add(obj.frame, nil)
+end
+
+
+@[Cache] Redraw
+
+for k,v in pairs(ci.cache) do
+	if (not (v == nil)) then
+		if (v.frame == obj.frame) then
+			obj.copybuffer("obj", "cache:memoryframe_cache_" .. v.id)
+			break
+		end
+	end
+end
+--obj.copybuffer("obj", "cache:memoryframe_cache_")

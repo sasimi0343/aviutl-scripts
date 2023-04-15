@@ -380,3 +380,4 @@ else
 	obj.zoom = 0
 	--obj.alpha = 0
 end
+

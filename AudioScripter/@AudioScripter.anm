@@ -1,0 +1,109 @@
+@Šg‘åLk(‰¹º“¯Šú)
+--track0:è‡’l,0,5000,1200,1
+--track1:‰¹ˆæ,1,50,1,1
+--track2:Šg‘å—¦,100,800,200
+--track3:Œ¸Š—¦,0,800,200
+--dialog:XƒXƒP[ƒ‹[%],xs=100;YƒXƒP[ƒ‹[%],ys=100;•ªŠ„”,div=5;•â•ü•\Ž¦/chk,hojo=1;•â•ü‚‚³[%],hh=100;
+obj.effect()
+siki=obj.track0
+i=math.min(obj.track1,div)
+s=obj.track2
+sd=obj.track3/100
+buf={}
+n=obj.getaudio(buf,"audiobuffer","spectrum",div)
+if (zoom == nil) then
+	zoom = 1
+end
+if(buf[i]>siki) then
+  zoom=s/100
+end
+if(zoom>1) then
+  zoom=(zoom+1)/sd
+end
+x=obj.w/2*zoom
+y=obj.h/2*zoom
+obj.drawpoly(-x,-y,0,x,-y,0,x,y,0,-x,y,0)
+
+if(hojo==1) then
+  h=obj.screen_h/2
+  w=obj.screen_w/n
+  --”gŒ`•\Ž¦(c–_)
+  obj.load("figure","ŽlŠpŒ`",0x00ff00,2)
+  obj.alpha=0.5
+  for j=1,n do
+    x=j*w-obj.screen_w/2-w/2
+    y=-buf[j]/10*hh/100+obj.screen_h/2
+    obj.drawpoly(x-w/2,y,0,x+w/2,y,0,x+w/2,h,0,x-w/2,h,0)
+  end
+
+  --‘I‘ð‚µ‚½‰¹ˆæ•\Ž¦(c–_)
+  obj.load("figure","ŽlŠpŒ`",0xff0000,2)
+  x=i*w-obj.screen_w/2-w/2
+  y=-buf[i]/10*hh/100+obj.screen_h/2
+  obj.drawpoly(x-w/2,y,0,x+w/2,y,0,x+w/2,h,0,x-w/2,h,0)
+
+  --è‡’l•\Ž¦(‰¡ü)
+  obj.load("figure","ŽlŠpŒ`",0xffffff,2)
+  sw=obj.screen_w/2
+  sy=-siki/10*hh/100+obj.screen_h/2
+  obj.drawpoly(-sw,sy-1,0,sw,sy-1,0,sw,sy+1,0,-sw,sy+1,0)
+
+  --ƒeƒLƒXƒg•\Ž¦
+  obj.setfont("MS UI Gothic",34,3,0xffffff,0x000000)
+  obj.load("text","‰¹ˆæ[" .. i .."]‚Ì‰¹—Ê=" .. string.format("%04d",buf[i]))
+  obj.draw(-obj.screen_w/2+obj.w/2,-obj.screen_h/2+obj.h/2)
+end
+
+
+
+@Šg‘åLk(BPM“¯Šú)
+--track0:BPM,1,9999,120,0.1
+--track1:Šg‘å—¦,100,800,200
+--track2:Œ¸Š—¦,0,800,200
+--dialog:•â•î•ñ•\Ž¦/chk,hojo=1;Šg‘å‚à‚·‚é/chk,alsozoom=1;ƒIƒvƒVƒ‡ƒ“,options={};
+
+local beat = 60 / obj.track0
+local tonext = 1 / obj.framerate
+local currentbeat = math.floor(obj.time / beat)
+local beattime = currentbeat * beat
+
+if (zoom == nil) then
+	zoom = 0
+end
+if (altzoom == nil) then
+	altzoom = 0
+end
+
+if ((obj.time >= beattime) and (obj.time < (beattime + tonext))) then
+	zoom = (obj.track1/100)-1
+	altzoom = 0
+end
+
+if(zoom>0) then
+	zoom=zoom/(obj.track2/100)
+	if (alsozoom == 1) then
+		altzoom = math.pow((obj.time % beat)/(beat*1.5), 5) * ((obj.track1/100)-1)
+	end
+end
+
+--print(zoom)
+
+obj.zoom = zoom+1 + altzoom
+
+if ((not (options[1] == nil)) and (not (options[1] == 0))) then
+	obj.effect("F’²•â³", "–¾‚é‚³", 100 + (zoom * options[1]))
+end
+
+if(hojo==1) then
+  h=obj.screen_h/2
+  w=obj.screen_w/n
+
+  --ƒeƒLƒXƒg•\Ž¦
+	if ((obj.time >= beattime) and (obj.time < (beattime + tonext))) then
+		obj.setfont("MS UI Gothic",34,3,0x00ff00,0x000000)
+	else
+		obj.setfont("MS UI Gothic",34,3,0xffffff,0x000000)
+	end
+  obj.load("text","beat: [" .. currentbeat .."] , beattime" .. beattime .. " (" .. obj.time .. " , " .. (beattime + tonext) .. ")")
+  obj.draw(-obj.screen_w/2+obj.w/2,-obj.screen_h/2+obj.h/2)
+end

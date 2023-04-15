@@ -14,10 +14,10 @@ end
 --track0:Freq,0,999,1,1
 --track1:Time,1,999,1,1
 --track2:Alpha,0,1,0,0.01
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]Debug/chk,dbg=0;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;[Global]Debug/chk,dbg=0;
 
 local et = require("et")
-et.Blink(obj, gt, gd, {
+et.Blink(obj, gt, gd, ggd, {
     freq = obj.track0,
     tim = obj.track1,
     alpha = obj.track2,
@@ -28,10 +28,10 @@ et.Blink(obj, gt, gd, {
 --track0:Freq,0,999,1,1
 --track1:Width,0,999,100,1
 --track2:Height,0,999,100,1
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Vertical/chk,vert=0;Random/chk,isrand=0;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Vertical/chk,vert=0;Random/chk,isrand=0;
 
 local et = require("et")
-et.Raster(obj, gt, gd, {
+et.Raster(obj, gt, gd, ggd, {
     freq = obj.track0,
     width = obj.track1,
     height = obj.track2,
@@ -40,10 +40,10 @@ et.Raster(obj, gt, gd, {
 })
 
 @Move
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Start X,sx=0;Start Y,sy=0;Start Z,sz=0;End X,ex=0;End Y,ey=0;End Z,ez=0;Reverse Mode,revmode=0;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Start X,sx=0;Start Y,sy=0;Start Z,sz=0;End X,ex=0;End Y,ey=0;End Z,ez=0;Reverse Mode,revmode=0;
 
 local et = require("et")
-et.Move(obj, gt, gd, {
+et.Move(obj, gt, gd, ggd, {
     sx = sx,
     sy = sy,
     sz = sz,
@@ -56,10 +56,10 @@ et.Move(obj, gt, gd, {
 
 @RandomMove90Deg
 --track0:Range,0,9999,100,0.1
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Seed,seed=1;
 
 local et = require("et")
-et.RandomMove90Deg(obj, gt, gd, {
+et.RandomMove90Deg(obj, gt, gd, ggd, {
     range = obj.track0,
     eas = eas,
     seed = seed
@@ -68,10 +68,10 @@ et.RandomMove90Deg(obj, gt, gd, {
 @RandomPos
 --track0:Range,0,9999,100,0.1
 --track1:RangeChange,-9999,9999,0,0.1
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;Direction,dir=0;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Seed,seed=1;Direction,dir=0;
 
 local et = require("et")
-et.RandomPos(obj, gt, gd, {
+et.RandomPos(obj, gt, gd, ggd, {
     range = obj.track0,
     eas = eas,
     seed = seed,
@@ -82,12 +82,43 @@ et.RandomPos(obj, gt, gd, {
 @Zoom
 --track0:Zoom,0,9999,100,0.1
 --track1:ZoomChange,-9999,9999,0,0.1
---dialog:[Global]Delay,gd=1;[Global]Time,gt=10;Easing,eas=-1;Seed,seed=1;
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Seed,seed=1;
 
 local et = require("et")
-et.Zoom(obj, gt, gd, {
+et.Zoom(obj, gt, gd, ggd, {
     zoom = obj.track0,
     eas = eas,
     seed = seed,
     zoomchange = obj.track1
+})
+
+@Rotate
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Start X,sx=0;Start Y,sy=0;Start Z,sz=0;End X,ex=0;End Y,ey=0;End Z,ez=0;Reverse Mode,revmode=0;
+
+local et = require("et")
+et.Rotate(obj, gt, gd, ggd, {
+    sx = sx,
+    sy = sy,
+    sz = sz,
+    ex = ex,
+    ey = ey,
+    ez = ez,
+    eas = eas,
+    revmode = revmode
+})
+
+@FanClipping
+--track0:äÓèÄäp,-1080,1080,90
+--dialog:[Global]Delay,gd=1;[Global]Time,gt=10;[Global]GlobalDelay,ggd=0;Easing,eas=-1;Start X,sx=0;Start Y,sy=0;Start Angle,sa=0;End X,ex=0;End Y,ey=0;End Angle,ea=0;Reverse Mode,revmode=0;
+
+local et = require("et")
+et.FanClipping(obj, gt, gd, ggd, {
+    sx = sx,
+    sy = sy,
+    sa = sa,
+    ex = ex,
+    ey = ey,
+    ea = ea,
+    eas = eas,
+    revmode = revmode
 })

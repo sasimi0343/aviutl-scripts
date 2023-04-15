@@ -1,11 +1,13 @@
 @Draw
-if (obj.frame == 0) then
+--track0:リセットしない,0,1,0,1
+if (obj.frame == 0 and obj.track0 == 0) then
 else
 obj.load("framebuffer")
 obj.copybuffer("obj", "tmp")
 end
 @Up
-if (obj.frame == 0) then
+--track0:リセットしない,0,1,0,1
+if (obj.frame == 0 and obj.track0 == 0) then
 obj.copybuffer("tmp", "obj")
 else
 obj.copybuffer("tmp", "frm")

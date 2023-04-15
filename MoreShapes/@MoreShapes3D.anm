@@ -1,0 +1,136 @@
+@[3DShape]Box
+--track0:Size,0,9999,100,1
+
+--if (sur == nil) then sur = {} end
+
+local w = obj.track0 / 2
+
+local p1 = { x = -w, y = -w, z = -w}
+local p2 = { x = w, y = -w, z = -w}
+local p3 = { x = w, y = w, z = -w}
+local p4 = { x = -w, y = w, z = -w}
+
+local p5 = { x = -w, y = -w, z = w}
+local p6 = { x = w, y = -w, z = w}
+local p7 = { x = w, y = w, z = w}
+local p8 = { x = -w, y = w, z = w}
+
+local s1 = {p1, p2, p3, p4, 75}
+local s2 = {p1, p2, p6, p5, 100}
+local s3 = {p5, p6, p7, p8, 75}
+local s4 = {p5, p1, p4, p8, 50}
+local s5 = {p8, p7, p3, p4, 25}
+local s6 = {p2, p6, p7, p3, 50}
+
+sur = {s1, s2, s3, s4, s5, s6}
+geo = {
+
+surface = sur,
+ox = 0,
+oy = 0,
+oz = 0,
+rx = 0,
+ry = 0,
+rz = 0
+
+}
+
+geos = {geo}
+
+@[3D]Scale
+--track0:X,-999,999,1,0.01
+--track1:Y,-999,999,1,0.01
+--track2:Z,-999,999,1,0.01
+
+for _,v2 in pairs(geos) do
+	local subsur = {}
+	for k,v in pairs(v2.surface) do
+		local p1 = v[1]
+		local p2 = v[2]
+		local p3 = v[3]
+		local p4 = v[4]
+		
+		p1 = { x = p1.x * obj.track0, y = p1.y * obj.track1, z = p1.z * obj.track2 }
+		p2 = { x = p2.x * obj.track0, y = p2.y * obj.track1, z = p2.z * obj.track2 }
+		p3 = { x = p3.x * obj.track0, y = p3.y * obj.track1, z = p3.z * obj.track2 }
+		p4 = { x = p4.x * obj.track0, y = p4.y * obj.track1, z = p4.z * obj.track2 }
+		
+		table.insert(subsur, {p1, p2, p3, p4})
+	end
+	v2.surface = subsur
+end
+
+@[3D]Rotate
+--track0:X,-999,999,1,0.01
+--track1:Y,-999,999,1,0.01
+--track2:Z,-999,999,1,0.01
+
+for k,v in pairs(geos) do
+	v.rx = v.rx + obj.track0
+	v.ry = v.ry + obj.track1
+	v.rz = v.rz + obj.track2
+end
+
+@[3D]Position
+--track0:X,-999,999,1,0.01
+--track1:Y,-999,999,1,0.01
+--track2:Z,-999,999,1,0.01
+for _,v2 in pairs(geos) do
+	v2.ox = v2.ox + obj.track0
+	v2.oy = v2.oy + obj.track1
+	v2.oz = v2.oz + obj.track2
+end
+
+
+@[3D]RandomPlace
+--track0:Count,1,999,10,1
+--track1:Range,0,9999,500,0.1
+--track2:Angle,0,9999,100,0.1
+--dialog:Random Option,randopt=0;
+
+local subgeo = {}
+
+for k,v in pairs(geos) do
+	for i=0,obj.track0 do
+	
+local ng = {
+
+surface = v.surface,
+ox = v.ox,
+oy = v.oy,
+oz = v.oz,
+rx = v.rx,
+ry = v.ry,
+rz = v.rz
+
+}
+		
+		ng.ox = rand(-obj.track1, obj.track1, i, 1)
+		ng.oy = rand(-obj.track1, obj.track1, i, 2)
+		ng.oz = rand(-obj.track1, obj.track1, i, 3)
+		
+		if (randopt == 0 or randopt == 1) then ng.rx = rand(-obj.track2, obj.track2, i, 4) end
+		if (randopt == 0 or randopt == 2) then ng.ry = rand(-obj.track2, obj.track2, i, 5) end
+		if (randopt == 0 or randopt == 3) then ng.rz = rand(-obj.track2, obj.track2, i, 6) end
+		
+		if (not (i == obj.track0)) then
+			table.insert(subgeo, ng)
+		end
+	end
+end
+
+geos = subgeo
+
+@[3D]Render
+--dialog:Lights/chk,lights=1;
+
+for k,v in pairs(geos) do
+	local avi3d = require("avi3d")
+	obj.ox = v.ox
+	obj.oy = v.oy
+	obj.oz = v.oz
+	obj.rx = v.rx
+	obj.ry = v.ry
+	obj.rz = v.rz
+	avi3d.Draw(obj, v.surface, (lights == 1))
+end

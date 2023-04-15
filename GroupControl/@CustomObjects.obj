@@ -11,3 +11,82 @@ for i=0,maxcount do
 	obj.draw()
 	
 end
+
+
+@TransparentFrameBuffer
+--dialog:Start Layer,fl=1;
+
+if (fl == nil) then
+	fl = 1
+end
+
+obj.setoption("drawtarget","tempbuffer", obj.screen_w, obj.screen_h)
+
+for i=fl,obj.layer-1 do
+	obj.load("layer", i, true)
+	local la = "layer" .. i .. "."
+	
+	if (not (obj.getvalue(la .. "x") == nil)) then
+		
+		
+		
+		local x = obj.getvalue(la .. "x")
+		local y = obj.getvalue(la .. "y")
+		local z = obj.getvalue(la .. "z")
+		local rx = obj.getvalue(la .. "rx")
+		local ry = obj.getvalue(la .. "ry")
+		local rz = obj.getvalue(la .. "rz")
+		
+		local zoom = obj.getvalue(la .. "zoom")/100
+		local alpha = obj.getvalue(la .. "alpha")
+		obj.aspect = obj.getvalue(la .. "aspect")
+		
+		obj.draw(x,y,z,zoom,alpha,rx,ry,rz)
+		
+	end
+end
+
+
+obj.load("tempbuffer")
+
+
+
+@[Group] Start
+--dialog:Width,width=1920;Height,height=1080;Layer,layer=1;
+
+--obj.copybuffer("cache:groupcontrol_co", "obj")
+--obj.setoption("drawtarget","tempbuffer", width, height)
+for i=1,layer do
+	obj.setoption("drawtarget","tempbuffer", width, height)
+	local la = "layer" .. (i + obj.layer) .. "."
+	
+	if (not (obj.getvalue(la .. "x") == nil)) then
+		
+		x = obj.getvalue(la .. "x")
+		y = obj.getvalue(la .. "y")
+		z = obj.getvalue(la .. "z")
+		zoom = obj.getvalue(la .. "zoom")/100
+		alpha = obj.getvalue(la .. "alpha")
+		aspect = obj.getvalue(la .. "aspect")
+		rx = obj.getvalue(la .. "rx")
+		ry = obj.getvalue(la .. "ry")
+		rz = obj.getvalue(la .. "rz")
+		
+		--Tempbuffer‚ªŽg‚í‚ê‚Ä‚¢‚é‚Ì‚ð‰ñ”ð
+		--obj.copybuffer("cache:groupcontrol_co", "obj")
+		
+		obj.load("layer", (i + obj.layer), true)
+		obj.copybuffer("cache:groupcontrol_co", "obj")
+		obj.setoption("drawtarget","tempbuffer")
+		obj.draw(x-obj.x,y-obj.y,z-obj.z,zoom,alpha,rx,ry,rz)
+		
+	end
+end
+obj.load("layer", layer, false)
+obj.copybuffer("obj", "cache:groupcontrol_co")
+obj.setoption("drawtarget","tempbuffer")
+obj.draw()
+
+obj.setoption("drawtarget","framebuffer")
+obj.load("tempbuffer")
+

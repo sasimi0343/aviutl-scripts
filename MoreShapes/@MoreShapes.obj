@@ -47,6 +47,25 @@ obj.load("figure", "三角形", color, obj.track0)
 obj.aspect = obj.track1 / 100
 obj.effect("マスク", "サイズ", obj.track0, "Y", ((100 - obj.track2)/100) * obj.track0, "type", 3, "マスクの反転", 1)
 
+@Arrow_Type2
+--track0:サイズ,0,2000,100,1
+--track1:太さ,0,100,25,0.1
+--track2:へこみ,0,100,80,0.1
+--track3:傘,0,100,0,0.1
+--dialog:色/col,color=0xffffff;
+obj.setoption("drawtarget","tempbuffer", obj.track0, obj.track0)
+
+obj.load("figure", "四角形", color, obj.track0, obj.track0-((obj.track2/100)*obj.track0))
+obj.effect("斜めクリッピング", "中心X", -obj.track3, "中心Y", obj.track3, "角度", 45, "ぼかし", 0)
+obj.draw()
+
+obj.load("figure", "四角形", color, obj.track0)
+obj.effect("斜めクリッピング", "中心X", 0, "中心Y", 0, "角度", -45, "ぼかし", 0, "幅", math.max(1, (obj.track1/100)*obj.track0))
+obj.draw()
+
+obj.setoption("drawtarget","framebuffer")
+obj.load("tempbuffer")
+
 @Box
 --track0:サイズ,0,9999,100,1
 --track1:角度,0,360,45,0.1
@@ -67,4 +86,3 @@ obj.load("tempbuffer")
 
 @AnimeEffect
 --file:
-

@@ -50,12 +50,16 @@ if (not( filpath == file) or obj.track0 == 1) then
 		bones[v.id].sfile = nil
 		bones[v.id].debugsuru = false
 		bones[v.id].flip = false
+		bones[v.id].hide = false
 		
 		if (v.blend == nil) then
 			v.blend = 0
 		end
 		if (v.alpha == nil) then
 			v.alpha = 1.0
+		end
+		if ((v.notshown == nil) or (v.notshown == 0)) then
+			v.notshown = false
 		end
 	end
 end
@@ -97,6 +101,7 @@ for k,v in pairs(bones) do
 	v.debugsuru = false
 	v.alt = false
 	v.flip = false
+	v.hide = false
 end
 
 if  (not (mouth == -1)) then
@@ -111,7 +116,7 @@ end
 
 @Bone
 --track0:Z回転,-720,720,0,0.1
---dialog:id,id="<NIL>";代理ファイル,afil=0;Alt/chk,altimg=0;debug/chk,debugsuru=0;debugpos,pos={};反転/chk,flip=0;
+--dialog:id,id="<NIL>";代理ファイル,afil=0;Alt/chk,altimg=0;debug/chk,debugsuru=0;debugpos,pos={};反転/chk,flip=0;非表示する/chk,hide=0;
 
 local cfil = afil
 
@@ -132,6 +137,7 @@ bone.sfile = cfil
 bone.debugsuru = (debugsuru == 1)
 bone.alt = (altimg == 1)
 bone.flip = (flip == 1)
+bone.hide = (hide == 1)
 
 if (debugsuru == 1) then
 
@@ -154,6 +160,10 @@ for k,v in pairs(cb.bones) do
 	local x = 0
 	local y = 0
 	local r = 0
+	
+	local isshown = ((not bones[v.id].hide) and (not v.notshown)) or (bones[v.id].hide and v.notshown)
+	
+	if (isshown) then
 	
 	obj.setoption("drawtarget","tempbuffer")
 	obj.setoption("blend", v.blend)
@@ -227,7 +237,7 @@ for k,v in pairs(cb.bones) do
 	
 	end --kokomade
 	
-
+	end
 end
 
 obj.setoption("drawtarget","framebuffer")
